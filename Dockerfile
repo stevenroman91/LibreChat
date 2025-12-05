@@ -53,7 +53,8 @@ COPY --chown=node:node create-librechat-config.sh /app/create-librechat-config.s
 RUN chmod +x /app/create-librechat-config.sh
 
 # Run config script then start backend
-CMD ["sh", "-c", "/app/create-librechat-config.sh && npm run backend"]
+# Use exec form to ensure proper signal handling
+CMD ["sh", "-c", "echo 'Starting config script...' && /app/create-librechat-config.sh && echo 'Config script completed, starting backend...' && npm run backend"]
 
 # Optional: for client with nginx routing
 # FROM nginx:stable-alpine AS nginx-client

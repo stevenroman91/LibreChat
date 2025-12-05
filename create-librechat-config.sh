@@ -24,5 +24,6 @@ endpoints:
       forcePrompt: false
 YAML_EOF
 
-echo "Created librechat.yaml at /app/librechat.yaml"
+echo "✅ Created librechat.yaml at /app/librechat.yaml"
+ls -la /app/librechat.yaml || echo "❌ File not found after creation"
 
