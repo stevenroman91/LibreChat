@@ -1,0 +1,24 @@
+# LibreChat Configuration for Sportsbook RAG
+# For more information, see: https://www.librechat.ai/docs/configuration/librechat_yaml
+
+# Configuration version (required)
+version: 1.2.1
+
+# Custom endpoints configuration
+endpoints:
+  custom:
+    # Sportsbook RAG API endpoint
+    - name: 'Sportsbook RAG'
+      apiKey: 'sk-optional'  # Optional API key
+      baseURL: 'https://sportsbook-rag.up.railway.app/v1'
+      models:
+        default:
+          - 'sportsbook-rag'
+        fetch: false  # Don't fetch models from API, use the default list
+      titleConvo: true  # Enable conversation title generation
+      titleModel: 'sportsbook-rag'  # Model to use for title generation
+      modelDisplayLabel: 'Sportsbook RAG'  # Display name in the UI
+      summarize: false  # Disable summarization
+      summaryModel: 'sportsbook-rag'  # Model for summarization (if enabled)
+      forcePrompt: false  # Don't force prompt usage
+
