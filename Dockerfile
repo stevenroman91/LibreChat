@@ -44,17 +44,31 @@ RUN \
     npm prune --production; \
     npm cache clean --force
 
+# Create librechat.yaml configuration file at build time
+RUN echo 'version: 1.2.1' > /app/librechat.yaml && \
+    echo 'cache: true' >> /app/librechat.yaml && \
+    echo 'endpoints:' >> /app/librechat.yaml && \
+    echo '  custom:' >> /app/librechat.yaml && \
+    echo '    - name: "Sportsbook RAG"' >> /app/librechat.yaml && \
+    echo '      apiKey: "sk-optional"' >> /app/librechat.yaml && \
+    echo '      baseURL: "https://sportsbook-rag.up.railway.app/v1"' >> /app/librechat.yaml && \
+    echo '      models:' >> /app/librechat.yaml && \
+    echo '        default:' >> /app/librechat.yaml && \
+    echo '          - "sportsbook-rag"' >> /app/librechat.yaml && \
+    echo '        fetch: false' >> /app/librechat.yaml && \
+    echo '      titleConvo: true' >> /app/librechat.yaml && \
+    echo '      titleModel: "sportsbook-rag"' >> /app/librechat.yaml && \
+    echo '      modelDisplayLabel: "Sportsbook RAG"' >> /app/librechat.yaml && \
+    echo '      summarize: false' >> /app/librechat.yaml && \
+    echo '      summaryModel: "sportsbook-rag"' >> /app/librechat.yaml && \
+    echo '      forcePrompt: false' >> /app/librechat.yaml && \
+    chown node:node /app/librechat.yaml && \
+    cat /app/librechat.yaml
+
 # Node API setup
 EXPOSE 3080
 ENV HOST=0.0.0.0
-
-# Create librechat.yaml from script if it doesn't exist
-COPY --chown=node:node create-librechat-config.sh /app/create-librechat-config.sh
-RUN chmod +x /app/create-librechat-config.sh
-
-# Run config script then start backend
-# Use exec form to ensure proper signal handling
-CMD ["sh", "-c", "echo 'Starting config script...' && /app/create-librechat-config.sh && echo 'Config script completed, starting backend...' && npm run backend"]
+CMD ["npm", "run", "backend"]
 
 # Optional: for client with nginx routing
 # FROM nginx:stable-alpine AS nginx-client
